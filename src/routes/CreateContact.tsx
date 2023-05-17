@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 const CreateContact = () => {
+	// State to store form data
 	const [formData, setFormData] = useState({
 		firstName: '',
 		lastName: '',
@@ -14,6 +15,7 @@ const CreateContact = () => {
 
 	const navigate = useNavigate()
 
+	// Function to handle input changes
 	const handleChange = (e: React.ChangeEvent) => {
 		const target = e.target as HTMLInputElement
 		setFormData({
@@ -22,19 +24,20 @@ const CreateContact = () => {
 		})
 	}
 
+	// Function to handle form submission
 	const handleSubmiit = (e: React.FormEvent) => {
 		e.preventDefault()
 		const newContact = {
 			...formData,
-			id: crypto.randomUUID()
+			id: crypto.randomUUID() // Generate a unique ID for the contact
 		}
-		dispatch(addContact(newContact))
+		dispatch(addContact(newContact)) // Dispatch the action to add the contact
 		setFormData({
 			firstName: '',
 			lastName: '',
 			status: 'Active'
 		})
-		navigate('/')
+		navigate('/') // Navigate back to the home page
 	}
 
 	return (

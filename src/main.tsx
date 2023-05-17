@@ -1,3 +1,4 @@
+// Import necessary dependencies
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -13,10 +14,10 @@ import ContactDetails from './routes/ContactDetails'
 import EditContact from './routes/EditContact'
 import CreateContact from './routes/CreateContact'
 
-// React Query Builder
+// Create an instance of React Query Client
 const queryClient = new QueryClient()
 
-// React Router Builder
+// Create an instance of React Router
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -47,10 +48,14 @@ const router = createBrowserRouter([
 	}
 ])
 
+// Render the application
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
+		{/* Provide the Redux store to the entire application */}
 		<Provider store={store}>
+			{/* Provide the React Query Client to the entire application */}
 			<QueryClientProvider client={queryClient}>
+				{/* Provide the React Router instance to the entire application */}
 				<RouterProvider router={router} />
 			</QueryClientProvider>
 		</Provider>

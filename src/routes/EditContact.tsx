@@ -5,6 +5,7 @@ import { updateContact } from '../features/contact/contactSlice'
 import { RootState } from '../context/store'
 
 const EditContact = () => {
+	// State to store form data
 	const [formData, setFormData] = useState({
 		id: '',
 		firstName: '',
@@ -16,12 +17,15 @@ const EditContact = () => {
 
 	const navigate = useNavigate()
 
+	// Get the contact ID from the URL parameters
 	const { id } = useParams()
 
+	// Get the contact details from the Redux store
 	const contact = useSelector((state: RootState) =>
 		state.contact.contacts.find(contact => contact.id === id)
 	)
 
+	// Function to handle input changes
 	const handleChange = (e: React.ChangeEvent) => {
 		const target = e.target as HTMLInputElement
 		setFormData({
@@ -30,12 +34,14 @@ const EditContact = () => {
 		})
 	}
 
+	// Function to handle form submission
 	const handleSubmiit = (e: React.FormEvent) => {
 		e.preventDefault()
-		dispatch(updateContact(formData))
-		navigate('/')
+		dispatch(updateContact(formData)) // Dispatch the action to update the contact
+		navigate('/') // Navigate back to the home page
 	}
 
+	// Set the form data when the contact or ID changes
 	useEffect(() => {
 		if (!contact) return
 		setFormData(contact)
