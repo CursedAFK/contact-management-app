@@ -16,6 +16,7 @@ import {
 } from 'recharts'
 import { useMediaQuery } from 'react-responsive'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
 // Interface for case data
@@ -55,7 +56,7 @@ const Chart = ({ data }: { data: CaseData[] }) => {
 					type='natural'
 					dataKey='cases'
 					stroke='#8884d8'
-					strokeWidth={1}
+					strokeWidth={2}
 					dot={{ r: 2 }}
 					activeDot={{ r: 2 }}
 				/>
@@ -68,6 +69,23 @@ const Chart = ({ data }: { data: CaseData[] }) => {
 const Map = ({ countryCase }: { countryCase: CountryInfoCollection[] }) => {
 	const isDesktop = useMediaQuery({ query: '(min-width: 768px)' })
 	const isTablet = useMediaQuery({ query: '(max-width: 768px)' })
+
+	// Reroute the default marker icon to the public direction
+	const markerIcon = L.icon({
+		iconUrl:
+			process.env.NODE_ENV === 'development'
+				? '/images/marker-icon.png'
+				: process.env.PUBLIC_URL + '/images/marker-icon.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowUrl:
+			process.env.NODE_ENV === 'development'
+				? '/images/marker-shadow.png'
+				: process.env.PUBLIC_URL + '/images/marker-shadow.png',
+		shadowSize: [41, 41],
+		shadowAnchor: [12, 41]
+	})
 
 	return (
 		<MapContainer
@@ -82,6 +100,7 @@ const Map = ({ countryCase }: { countryCase: CountryInfoCollection[] }) => {
 				<Marker
 					key={country.country} // Use a unique key for each marker
 					position={[country.countryInfo.lat, country.countryInfo.long]} // Set marker position using country latitude and longitude
+					icon={markerIcon} // Set marker icon
 				>
 					<Popup>
 						{/* Display country information in the marker popup */}
